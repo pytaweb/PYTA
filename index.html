@@ -353,12 +353,180 @@
 
   a:focus-visible, button:focus-visible{ outline:2px solid var(--red-bright); outline-offset:3px; }
 
+  /* ===================== CONTINUOUS AMBIENT MOTION ===================== */
+  /* hero glow orbs drift independently — never repeating the same position */
+  .bg-glow-key{ animation:heroGlowKey 22s ease-in-out infinite; }
+  .bg-glow-fill{ animation:heroGlowFill 28s ease-in-out infinite; }
+  .bg-glow-rim{ animation:heroGlowRim 16s ease-in-out infinite; }
+  @keyframes heroGlowKey{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    33%{ transform:translate(-3%,5%) scale(1.08); }
+    66%{ transform:translate(4%,-4%) scale(.94); }
+  }
+  @keyframes heroGlowFill{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    33%{ transform:translate(5%,-3%) scale(.96); }
+    66%{ transform:translate(-4%,6%) scale(1.1); }
+  }
+  @keyframes heroGlowRim{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-6%,8%) scale(1.15); }
+  }
+
+  /* section glows drift on their own rhythm */
+  .section-glow{ animation:sectionGlowDrift 18s ease-in-out infinite; }
+  .section-glow.dim{ animation-duration:26s; animation-direction:reverse; }
+  @keyframes sectionGlowDrift{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    25%{ transform:translate(3%,4%) scale(1.06); }
+    50%{ transform:translate(-2%,6%) scale(.97); }
+    75%{ transform:translate(4%,-3%) scale(1.04); }
+  }
+
+  /* background wordmarks slow vertical drift */
+  .bg-word-1{ animation:bgWord1 44s ease-in-out infinite; }
+  .bg-word-2{ animation:bgWord2 56s ease-in-out infinite; }
+  @keyframes bgWord1{
+    0%,100%{ transform:translateY(0) translateX(0); }
+    50%{ transform:translateY(-22px) translateX(4px); }
+  }
+  @keyframes bgWord2{
+    0%,100%{ transform:translateY(0) translateX(0); }
+    50%{ transform:translateY(28px) translateX(-6px); }
+  }
+
+  /* section wordmarks slow lateral drift */
+  .section-word{ animation:sectionWord 38s ease-in-out infinite; }
+  @keyframes sectionWord{
+    0%,100%{ transform:translateX(0); }
+    50%{ transform:translateX(-1.5%); }
+  }
+
+  /* dashboard card continuously breathes */
+  .dash-card:not(.tilt:hover){ animation:dashBreath 9s ease-in-out infinite; }
+  @keyframes dashBreath{
+    0%,100%{ transform:perspective(1600px) rotateY(-9deg) rotateX(5deg) scale(1); box-shadow:var(--shadow-elev-3); }
+    50%{ transform:perspective(1600px) rotateY(-8.4deg) rotateX(4.4deg) scale(1.007); box-shadow:var(--shadow-elev-3), 0 0 70px -22px rgba(225,6,0,.28); }
+  }
+
+  /* KPI shimmer scan */
+  .dash-kpi-value, .dash-kpi-value-text{ position:relative; overflow:hidden; }
+  .dash-kpi-value::after, .dash-kpi-value-text::after{
+    content:""; position:absolute; top:0; left:-120%; width:55%; height:100%;
+    background:linear-gradient(105deg, transparent 40%, rgba(255,255,255,.13) 50%, transparent 60%);
+    animation:kpiShimmer 7s ease-in-out infinite;
+  }
+  .dash-kpi:nth-child(2) .dash-kpi-value-text::after{ animation-delay:2.3s; }
+  .dash-kpi:nth-child(3) .dash-kpi-value-text::after{ animation-delay:4.6s; }
+  @keyframes kpiShimmer{ 0%,100%{ left:-120%; } 55%{ left:160%; } }
+
+  /* chart line re-draws on loop after initial draw */
+  .dash-card.live .dash-chart-path{ animation:chartLoop 16s ease-in-out 2s infinite; }
+  @keyframes chartLoop{
+    0%,25%{ stroke-dashoffset:0; opacity:1; }
+    40%{ stroke-dashoffset:600; opacity:.2; }
+    55%{ stroke-dashoffset:600; opacity:.2; }
+    85%,100%{ stroke-dashoffset:0; opacity:1; }
+  }
+
+  /* trust seal slow rotate */
+  .trust-seal{ animation:trustSpin 55s linear infinite; }
+  .trust-seal-num, .trust-seal-label{ animation:trustSpin 55s linear infinite reverse; }
+  @keyframes trustSpin{ to{ transform:rotate(360deg) rotate(-8deg); } }
+
+  /* pulse-seal rise/fall */
+  .pulse-seal{ animation:pulseSealFloat 5s ease-in-out infinite; }
+  @keyframes pulseSealFloat{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-4px); box-shadow:0 22px 44px -16px rgba(225,6,0,.4); }
+  }
+
+  /* hero red headline glow breathe */
+  .hero-headline .mask:nth-child(3) span{
+    animation:riseIn .85s cubic-bezier(.16,.84,.32,1) .39s both,
+              accentGlow 6s ease-in-out 1.5s infinite;
+  }
+  @keyframes accentGlow{
+    0%,100%{ text-shadow:none; }
+    50%{ text-shadow:0 0 50px rgba(255,43,32,.5), 0 0 100px rgba(225,6,0,.22); }
+  }
+
+  /* live dot pulse stronger */
+  .dot{ animation:dotPulse 1.9s ease-in-out infinite; }
+  @keyframes dotPulse{
+    0%,100%{ transform:scale(1); box-shadow:0 0 0 0 rgba(255,43,32,.55); }
+    50%{ transform:scale(1.18); box-shadow:0 0 0 7px rgba(255,43,32,0); }
+  }
+
+  /* member count float after count-done */
+  .member-hero.count-done .member-count{ animation:memberFloat 7s ease-in-out infinite; }
+  @keyframes memberFloat{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-7px); }
+  }
+
+  /* cards idle very gentle lift when not hovered */
+  .lap-card:not(:hover), .pod-card:not(:hover){ animation:cardIdle 11s ease-in-out infinite; }
+  .lap-grid .lap-card:nth-child(2):not(:hover){ animation-delay:3.6s; }
+  .lap-grid .lap-card:nth-child(3):not(:hover){ animation-delay:7.2s; }
+  @keyframes cardIdle{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-4px); }
+  }
+
+  /* stat chips ambient rise */
+  .stat-chip.glass{ animation:statChipIdle 12s ease-in-out infinite; }
+  .stat-chip.glass:nth-child(2){ animation-delay:4s; }
+  .stat-chip.glass:nth-child(3){ animation-delay:8s; }
+  @keyframes statChipIdle{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-3px); }
+  }
+
+  /* big number stats gentle scale-pulse */
+  .stat-pop:not(:hover){ animation:statPopBreath 14s ease-in-out infinite; }
+  .stat-pop:nth-child(2):not(:hover){ animation-delay:4.6s; }
+  .stat-pop:nth-child(3):not(:hover){ animation-delay:9.2s; }
+  @keyframes statPopBreath{
+    0%,100%{ transform:translateY(0) scale(1); }
+    50%{ transform:translateY(-3px) scale(1.012); }
+  }
+
+  /* nav pill breathe */
+  .nav.scrolled{ animation:navBreath 10s ease-in-out infinite; }
+  @keyframes navBreath{
+    0%,100%{ backdrop-filter:blur(14px) saturate(100%); }
+    50%{ backdrop-filter:blur(18px) saturate(120%); }
+  }
+
+  /* chart callout rise */
+  .chart-callout{ animation:calloutBob 6s ease-in-out infinite; }
+  @keyframes calloutBob{
+    0%,100%{ transform:scale(1) translateY(0); }
+    50%{ transform:scale(1.04) translateY(-4px); }
+  }
+
+  /* F1 light pulses continuously after lighting sequence */
+  .light.lit{ animation:litBreath 1.4s ease-in-out infinite; }
+  @keyframes litBreath{
+    0%,100%{ box-shadow:0 0 24px 4px rgba(225,6,0,.75); background:var(--red); }
+    50%{ box-shadow:0 0 40px 10px rgba(225,6,0,.55); background:var(--red-bright); }
+  }
+
+  /* final CTA glow pulse */
+  .lights-out .cta-primary.big{ animation:ctaPulse 5s ease-in-out infinite; }
+  @keyframes ctaPulse{
+    0%,100%{ box-shadow:var(--shadow-red); }
+    50%{ box-shadow:0 0 50px -10px rgba(255,43,32,.7), 0 0 100px -20px rgba(225,6,0,.35); }
+  }
+
   @media (prefers-reduced-motion:reduce){
     *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
     .hero-headline .mask span, .hero-dek, .hero-actions, .hero-right{ opacity:1; transform:none; }
     .hero-grid{ filter:none !important; opacity:1 !important; transform:none !important; }
     .ticker-track{ animation:none !important; }
     .intro{ display:none !important; }
+    .dash-kpi-value::after, .dash-kpi-value-text::after{ display:none; }
   }
 </style>
 <noscript><style>.hero-grid{filter:none!important;opacity:1!important;transform:none!important} .intro{display:none!important} body.intro-lock{overflow:visible!important;height:auto!important}</style></noscript>
